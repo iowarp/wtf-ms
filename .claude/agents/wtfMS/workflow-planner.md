@@ -50,6 +50,7 @@ Traditional workflows encode decades of research practice. They are starting poi
 Read from spawning prompt:
 - `<research>` — full RESEARCH.md
 - `<literature>` — LITERATURE.md gaps and methods landscape
+- `<virtual_lab>` — full VIRTUAL-LAB.md resource inventory (use to constrain task feasibility)
 - `<selected_template>` — chosen traditional workflow steps
 - `<customizations>` — user's add/remove/reorder requests
 - `<scope_decisions>` — in/out-of-scope confirmed by user
@@ -71,6 +72,19 @@ For each task, determine:
 - Type (literature | experimental | computational | data-analysis | analytical | writing)
 - Dependencies (which prior tasks must complete first)
 - Whether it can run in parallel with other tasks
+
+**Resource feasibility check (if VIRTUAL-LAB.md provided):**
+For each task, check against the Resource-to-Task Mapping table in VIRTUAL-LAB.md:
+- If required resource is available → mark task feasible
+- If required resource has a gap → flag the task with ⚠ and note the alternative
+- If required resource is completely unavailable with no alternative → mark task BLOCKED and suggest removing or replacing it
+
+Example flags:
+- "⚠ Task 05 (TEM characterization): No in-house TEM. External facility available (2–3 week lead time) — add booking step."
+- "⚠ Task 07 (DFT with VASP): No VASP license. Alternative: Quantum ESPRESSO (free, installed on HPC)."
+
+Present flagged tasks to user before proceeding:
+- AskUserQuestion: "I flagged [N] tasks with resource constraints. [List them]. How do you want to handle each?"
 
 Flag any tasks that are likely too large and suggest splitting.
 

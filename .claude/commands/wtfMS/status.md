@@ -52,6 +52,10 @@ LITERATURE
   Gaps:     [N gaps identified]
   Keywords: [primary keywords]
 
+VIRTUAL LAB
+  Status:   [VIRTUAL-LAB.md exists? defined | not defined]
+  Equipment:[N items] | Compute: [HPC systems] | Gaps: [N flagged]
+
 WORKFLOW  ([N]/[total] tasks complete)
   Task 01:  [name] — [☑ complete | ☑ in-progress | ☐ pending | ☐ archived]
   Task 02:  [name] — [status]
@@ -75,6 +79,7 @@ PAPER (wtf-p)
 Based on state, suggest:
 - No RESEARCH.md → `/wtfMS:identify-research`
 - No LITERATURE.md → `/wtfMS:literature-review`
+- No VIRTUAL-LAB.md → `/wtfMS:define-virtual-lab`
 - No WORKFLOW.md → `/wtfMS:define-research-tasks`
 - Tasks pending → `/wtfMS:execute-task [next pending N]`
 - All tasks complete, no paper → `/wtfMS:wtfp`

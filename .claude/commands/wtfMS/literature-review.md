@@ -113,9 +113,10 @@ Keywords: [primary keywords]
 
 ## ▶ Next Up
 
-**Define research tasks and workflow**
+**Map your available lab resources**
+(equipment, HPC, software, collaborations)
 
-`/wtfMS:define-research-tasks`
+`/wtfMS:define-virtual-lab`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -124,6 +125,7 @@ Keywords: [primary keywords]
 **Also available:**
 - `/wtfMS:identify-research` — refine prompt based on gaps found
 - `/wtfMS:upload-data` — add more papers/datasets to review
+- `/wtfMS:define-research-tasks` — skip virtual lab setup and go straight to workflow
 
 </offer_next>
 

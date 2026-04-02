@@ -28,16 +28,22 @@ CORE RESEARCH LOOP
        Review literature, identify gaps, refine keywords
        (loops back to identify-research if needed)
 
- 3. /wtfMS:define-research-tasks
+ 3. /wtfMS:define-virtual-lab
+       Map available resources: experimental equipment,
+       HPC systems, software licenses, collaborations
+       Questions are targeted to your research domain
+
+ 4. /wtfMS:define-research-tasks
        Choose from traditional research workflows or
        build from scratch — interview per task for assumptions
+       (resource-aware: flags tasks requiring unavailable equipment)
 
- 4. /wtfMS:execute-task [N | all]
+ 5. /wtfMS:execute-task [N | all]
        Execute a specific task or the full workflow
        Types: literature, experimental, computational,
               data-analysis, analytical, writing
 
- 5. /wtfMS:wtfp
+ 6. /wtfMS:wtfp
        Bridge to wtf-p — translate research into a paper
        project with include/exclude control
 

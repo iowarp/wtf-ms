@@ -13,6 +13,7 @@ allowed-tools:
 <execution_context>
 @.research/RESEARCH.md
 @.research/LITERATURE.md
+@.research/VIRTUAL-LAB.md
 @.claude/wtf-ms/references/traditional-workflows.md
 @.claude/wtf-ms/templates/WORKFLOW.md
 </execution_context>
@@ -38,6 +39,15 @@ No arguments. Requires RESEARCH.md to exist.
 [ -f .research/WORKFLOW.md ] && echo "WARN: WORKFLOW.md exists — running again will replace it."
 cat .research/RESEARCH.md
 [ -f .research/LITERATURE.md ] && cat .research/LITERATURE.md | head -60
+```
+
+Check for VIRTUAL-LAB.md and warn if missing:
+```bash
+if [ ! -f .research/VIRTUAL-LAB.md ]; then
+  echo "NOTE: No VIRTUAL-LAB.md found. Run /wtfMS:define-virtual-lab to map your resources first."
+  echo "Proceeding without resource constraints — tasks may be planned that require unavailable equipment."
+fi
+[ -f .research/VIRTUAL-LAB.md ] && cat .research/VIRTUAL-LAB.md
 ```
 
 ## 2. Present Workflow Template Options
@@ -84,6 +94,7 @@ Task(
 Filled prompt includes:
 - `<research>` — full RESEARCH.md
 - `<literature>` — LITERATURE.md gaps and methods landscape
+- `<virtual_lab>` — full VIRTUAL-LAB.md (or "not defined" if missing)
 - `<selected_template>` — the chosen template tasks
 - `<customizations>` — additions, removals, reorderings
 - `<scope_decisions>` — inclusions, exclusions, constraints
