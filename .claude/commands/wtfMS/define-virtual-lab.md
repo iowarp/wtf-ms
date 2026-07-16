@@ -120,8 +120,6 @@ Lab profile: .research/VIRTUAL-LAB.md
 
 `/wtfMS:define-research-tasks`
 
-<sub>`/clear` first → fresh context window</sub>
-
 ───────────────────────────────────────────
 
 **Also available:**

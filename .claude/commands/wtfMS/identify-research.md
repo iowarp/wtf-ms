@@ -129,8 +129,6 @@ Profile: .research/RESEARCH.md
 
 `/wtfMS:literature-review`
 
-<sub>`/clear` first → fresh context window</sub>
-
 ───────────────────────────────────────────
 
 **Also available:**

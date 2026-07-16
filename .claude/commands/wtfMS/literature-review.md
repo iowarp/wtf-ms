@@ -118,8 +118,6 @@ Keywords: [primary keywords]
 
 `/wtfMS:define-virtual-lab`
 
-<sub>`/clear` first → fresh context window</sub>
-
 ───────────────────────────────────────────
 
 **Also available:**
