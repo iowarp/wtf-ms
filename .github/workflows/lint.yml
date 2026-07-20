@@ -15,5 +15,7 @@ jobs:
           python-version: "3.x"
       - name: Run wtfms-lint
         run: python3 scripts/lint.py
-      - name: Run citation-verifier unit tests
-        run: python3 tests/test_verify_citations.py
+      - name: Run guardrail unit tests
+        run: |
+          python3 tests/test_verify_citations.py
+          python3 tests/test_check_physics.py

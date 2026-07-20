@@ -79,11 +79,18 @@ wtfp (→ wtf-p paper writing system)
 
 ## Research Integrity
 
-Literature reviews and literature tasks have their citations checked
-automatically against [Crossref](https://www.crossref.org/) to catch
-hallucinated papers and dead DOIs before they land in your research state.
-This runs as an advisory step (it reports and the agent acts; it never blocks).
-See [docs/verifying-citations.md](docs/verifying-citations.md).
+wtf-MS guards against the "plausible but wrong" failure modes of an LLM
+research assistant with automated, advisory checks (they report and the agent
+acts; they never hard-block):
+
+- **Citation verification** — references are resolved against
+  [Crossref](https://www.crossref.org/) to catch hallucinated papers and dead
+  DOIs before they land in your research state.
+  See [docs/verifying-citations.md](docs/verifying-citations.md).
+- **Physical sanity checks** — generated task outputs are scanned for
+  physically impossible values (below absolute zero, negative density,
+  out-of-range fractions, compositions that don't sum to 100%).
+  See [docs/checking-physics.md](docs/checking-physics.md).
 
 ## Research Domains Supported
 

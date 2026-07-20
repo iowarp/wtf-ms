@@ -128,15 +128,23 @@ Filled prompt includes:
 
 ## 7. Handle Executor Return
 
-**`## TASK COMPLETE`:**
-- **If the task produced citations** (a `literature` task, or any output with a
-  `.bib` file or reference list) — verify them before committing:
+**`## TASK COMPLETE`:** Before committing, run the advisory guardrails on the
+task's outputs (both are advisory — report and act, never a hard block):
+- **Physical sanity** (all task types) — flag impossible/implausible values:
+  ```bash
+  python3 .claude/wtf-ms/scripts/check_physics.py .research/tasks/task-[NN]/*.md 2>/dev/null || true
+  ```
+  Fix any **IMPOSSIBLE** values (below absolute zero, non-positive density,
+  out-of-range fractions) — these are errors in the generated output. Review
+  **IMPLAUSIBLE** warnings (absurd density, composition not summing to ~100%)
+  with the user.
+- **Citations** — if the task produced a `.bib` file or reference list:
   ```bash
   python3 .claude/wtf-ms/scripts/verify_citations.py .research/tasks/task-[NN]/*.bib .research/tasks/task-[NN]/*summary*.md 2>/dev/null || true
   ```
-  Advisory (never blocks): drop/replace **NOT_FOUND** citations and re-search,
-  surface **MISMATCH** to the user, annotate **UNVERIFIABLE** placeholders. See
-  the literature-review command for the full policy.
+  Drop/replace **NOT_FOUND** citations and re-search, surface **MISMATCH** to
+  the user, annotate **UNVERIFIABLE** placeholders. See the literature-review
+  command for the full policy.
 - Mark task as `☑ complete` in WORKFLOW.md
 - Update STATE.md: current task = N+1
 - Commit:
