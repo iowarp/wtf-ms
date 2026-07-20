@@ -9,6 +9,7 @@ allowed-tools:
   - Grep
   - WebSearch
   - WebFetch
+  - Task
   - AskUserQuestion
 ---
 
