@@ -129,6 +129,14 @@ Filled prompt includes:
 ## 7. Handle Executor Return
 
 **`## TASK COMPLETE`:**
+- **If the task produced citations** (a `literature` task, or any output with a
+  `.bib` file or reference list) — verify them before committing:
+  ```bash
+  python3 .claude/wtf-ms/scripts/verify_citations.py .research/tasks/task-[NN]/*.bib .research/tasks/task-[NN]/*summary*.md 2>/dev/null || true
+  ```
+  Advisory (never blocks): drop/replace **NOT_FOUND** citations and re-search,
+  surface **MISMATCH** to the user, annotate **UNVERIFIABLE** placeholders. See
+  the literature-review command for the full policy.
 - Mark task as `☑ complete` in WORKFLOW.md
 - Update STATE.md: current task = N+1
 - Commit:

@@ -77,6 +77,14 @@ wtfp (→ wtf-p paper writing system)
 | `analytical` | Mathematical modeling, derivations, validation |
 | `writing` | Bridge to `/wtfMS:wtfp` |
 
+## Research Integrity
+
+Literature reviews and literature tasks have their citations checked
+automatically against [Crossref](https://www.crossref.org/) to catch
+hallucinated papers and dead DOIs before they land in your research state.
+This runs as an advisory step (it reports and the agent acts; it never blocks).
+See [docs/verifying-citations.md](docs/verifying-citations.md).
+
 ## Research Domains Supported
 
 - Structural materials (metals, HEAs, ceramics, composites)

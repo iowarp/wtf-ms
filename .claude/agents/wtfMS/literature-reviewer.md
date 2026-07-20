@@ -149,6 +149,14 @@ Use AskUserQuestion if keyword refinement needs domain knowledge:
 |-------|------|---------------|
 | [Author et al., Journal] | [year] | [1-line significance] |
 
+**Citation integrity (important):** Only list papers you actually found in
+your search and are confident are real. Put the paper title in "quotes" so it
+can be machine-verified. If you are unsure a specific paper exists or have only
+a vague recollection of it, do NOT invent bibliographic details — either omit
+it or mark it explicitly as a placeholder, e.g. `[topic — unverified, YEAR]`,
+and note it under Review Notes. The orchestrator runs an automated Crossref
+check on this file after you return; fabricated citations will be flagged.
+
 ## Research Gaps
 
 ### Gap 1: [title] — DIRECT

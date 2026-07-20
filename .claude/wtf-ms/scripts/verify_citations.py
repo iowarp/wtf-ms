@@ -26,10 +26,10 @@ Design notes:
 Exit status: non-zero if any NOT_FOUND or MISMATCH (a hallucination signal).
 Zero deps (Python stdlib only).
 
-Usage:
-  python3 scripts/verify_citations.py .research/LITERATURE.md [more files ...]
-  python3 scripts/verify_citations.py --offline path.bib
-  python3 scripts/verify_citations.py --json .research/tasks/task-01/*.bib
+Usage (invoked from a project root, where .claude/ and .research/ live):
+  python3 .claude/wtf-ms/scripts/verify_citations.py .research/LITERATURE.md
+  python3 .claude/wtf-ms/scripts/verify_citations.py --offline path.bib
+  python3 .claude/wtf-ms/scripts/verify_citations.py --json task-01.bib
 """
 import argparse
 import difflib

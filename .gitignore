@@ -1,2 +1,9 @@
 # Throwaway experiment harness (per _tmp_ naming convention)
 _tmp_harness/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
+
+# Local HDF5 demo logs (binary; keep out of the repo)
+demologs/
