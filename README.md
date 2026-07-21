@@ -91,6 +91,10 @@ acts; they never hard-block):
   physically impossible values (below absolute zero, negative density,
   out-of-range fractions, compositions that don't sum to 100%).
   See [docs/checking-physics.md](docs/checking-physics.md).
+- **Runnable-by-construction checks** — generated analysis/simulation scripts
+  are parsed (never executed) to catch syntax errors, hallucinated imports, and
+  silent stubs before you try to run them.
+  See [docs/checking-scripts.md](docs/checking-scripts.md).
 
 ## Research Domains Supported
 

@@ -19,3 +19,4 @@ jobs:
         run: |
           python3 tests/test_verify_citations.py
           python3 tests/test_check_physics.py
+          python3 tests/test_check_scripts.py

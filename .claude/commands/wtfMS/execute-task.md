@@ -145,6 +145,14 @@ task's outputs (both are advisory — report and act, never a hard block):
   Drop/replace **NOT_FOUND** citations and re-search, surface **MISMATCH** to
   the user, annotate **UNVERIFIABLE** placeholders. See the literature-review
   command for the full policy.
+- **Generated scripts** — if the task produced `.py` or `.sh` files
+  (`computational`, `data-analysis`):
+  ```bash
+  python3 .claude/wtf-ms/scripts/check_scripts.py .research/tasks/task-[NN]/*.py .research/tasks/task-[NN]/*.sh 2>/dev/null || true
+  ```
+  Fix any **WILL NOT RUN** errors (syntax) — the script would crash on first
+  run. Review **SUSPECT** warnings (hallucinated imports, stubs, leftover
+  placeholders) and complete/correct them before handing the script over.
 - Mark task as `☑ complete` in WORKFLOW.md
 - Update STATE.md: current task = N+1
 - Commit:
