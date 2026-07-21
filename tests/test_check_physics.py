@@ -62,6 +62,17 @@ class TestTemperature(unittest.TestCase):
         self.assertEqual(f.errors, [])
         self.assertEqual(len(f.warnings), 1)
 
+    def test_negative_rate_and_delta_not_flagged(self):
+        # Temperature differences / rates / gradients are legitimately signed.
+        for text in ("Cooling rate: -50 K/s during quench",
+                     "Temperature change per pass: ΔT = -5 K",
+                     "Thermal gradient -12 K/mm at the interface"):
+            self.assertEqual(run(text).errors, [], f"false positive: {text}")
+
+    def test_absolute_negative_kelvin_still_flagged(self):
+        # No delta/rate/gradient context -> a genuine below-absolute-zero error.
+        self.assertEqual(len(run("Cool the sample to -5 K").errors), 1)
+
 
 class TestDensity(unittest.TestCase):
     def test_nonpositive_density(self):
@@ -88,6 +99,15 @@ class TestFractions(unittest.TestCase):
     def test_unbounded_bare_percent_ignored(self):
         # A bare % with no bounded-quantity keyword is not sign/range-checked.
         self.assertEqual(run("improved by 250% over baseline").errors, [])
+
+    def test_relative_change_of_bounded_quantity_ignored(self):
+        # "efficiency" is a bounded keyword, but a relative change can exceed
+        # 100% and must not be flagged as impossible.
+        self.assertEqual(run("Efficiency improved by 250% over baseline").errors, [])
+        self.assertEqual(run("Yield increased 150% relative to control").errors, [])
+
+    def test_absolute_bounded_percent_still_flagged(self):
+        self.assertEqual(len(run("Measured porosity: 120%").errors), 1)
 
 
 class TestComposition(unittest.TestCase):

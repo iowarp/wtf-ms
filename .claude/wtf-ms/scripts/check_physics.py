@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
 check_physics — scan wtf-MS task outputs for physically impossible or
-implausible numeric values, a second class of "plausible but wrong" LLM
-output (after fabricated citations).
+implausible numeric values.
 
 It reads generated protocol / results / input files, extracts (value, unit)
 pairs, and checks them against physical bounds:
@@ -13,13 +12,13 @@ pairs, and checks them against physical bounds:
   * a plain % tied to a bounded quantity (porosity, purity, ...)     -> ERROR
   * an alloy composition block whose wt%/at% values do not sum ~100  -> WARN
 
-DESIGN — false positives are the enemy of a guardrail, so v1 only asserts
-things that are *unconditionally* true. In particular it NEVER flags a
-negative value on its own: many materials quantities are legitimately
-negative (DFT total / formation energies, binding enthalpies, stresses,
-thermal-expansion mismatch, coordinates). Only quantities that are
-non-negative *by definition* (absolute temperature, density, a bounded
-fraction) are sign-checked.
+DESIGN — to keep false positives low, v1 only asserts things that are
+unconditionally true. It does not flag a value merely for being negative:
+many materials quantities are legitimately negative (DFT total / formation
+energies, binding enthalpies, stresses, thermal-expansion mismatch,
+coordinates), as are temperature differences, rates, and gradients. Only
+quantities that are non-negative by definition (absolute temperature,
+density, a bounded fraction) are sign-checked.
 
 Exit status: non-zero if any ERROR. Zero deps (Python stdlib only).
 
@@ -64,26 +63,36 @@ def _iter_matches(pattern, text):
         yield m, line_no
 
 
+# A temperature UNIT also appears in signed quantities that are legitimately
+# negative: differences (ΔT), rates (K/s), and gradients (K/mm). We only
+# sign-check a value that reads as an ABSOLUTE temperature — one not followed
+# by "/" (a rate/gradient) and not on a line about a delta/rate/gradient.
+_TEMP_SIGNED_CTX = re.compile(
+    r"Δ|∆|\bdelta\b|\bgradient\b|\brate\b|\bchange\b|\bdifference\b",
+    re.IGNORECASE)
+
+
 def check_temperature(text, path, fnd):
-    # Kelvin: absolute, so a negative value is impossible.
-    for m, ln in _iter_matches(_NUM + r"\s*K\b", text):
-        v = _to_float(m.group(1))
-        if v < 0:
-            fnd.error(path, ln, "temp-kelvin",
-                      f"{v:g} K is below absolute zero (0 K)")
-        elif v > 100000:
-            fnd.warn(path, ln, "temp-kelvin",
-                     f"{v:g} K is implausibly high — check units")
-    for m, ln in _iter_matches(_NUM + r"\s*(?:°\s*C|degC|℃)", text):
-        v = _to_float(m.group(1))
-        if v < -273.15:
-            fnd.error(path, ln, "temp-celsius",
-                      f"{v:g} C is below absolute zero (-273.15 C)")
-    for m, ln in _iter_matches(_NUM + r"\s*(?:°\s*F|degF|℉)", text):
-        v = _to_float(m.group(1))
-        if v < -459.67:
-            fnd.error(path, ln, "temp-fahrenheit",
-                      f"{v:g} F is below absolute zero (-459.67 F)")
+    for ln, line in enumerate(text.splitlines(), 1):
+        signed = _TEMP_SIGNED_CTX.search(line)
+        for m in re.finditer(_NUM + r"\s*K\b(?!\s*/)", line):
+            v = _to_float(m.group(1))
+            if v < 0 and not signed:
+                fnd.error(path, ln, "temp-kelvin",
+                          f"{v:g} K is below absolute zero (0 K)")
+            elif v > 100000:
+                fnd.warn(path, ln, "temp-kelvin",
+                         f"{v:g} K is implausibly high — check units")
+        for m in re.finditer(_NUM + r"\s*(?:°\s*C|degC|℃)(?!\s*/)", line):
+            v = _to_float(m.group(1))
+            if v < -273.15 and not signed:
+                fnd.error(path, ln, "temp-celsius",
+                          f"{v:g} C is below absolute zero (-273.15 C)")
+        for m in re.finditer(_NUM + r"\s*(?:°\s*F|degF|℉)(?!\s*/)", line):
+            v = _to_float(m.group(1))
+            if v < -459.67 and not signed:
+                fnd.error(path, ln, "temp-fahrenheit",
+                          f"{v:g} F is below absolute zero (-459.67 F)")
 
 
 # density units -> factor to convert into g/cm^3
@@ -115,6 +124,12 @@ _BOUNDED_KEYWORDS = re.compile(
     r"porosit|relative density|rel\.?\s*density|densit|purit|"
     r"fraction|content|concentrat|abundance|yield|efficien|"
     r"conversion|selectivit|recover", re.IGNORECASE)
+# ...but not when the % is a relative change (which can exceed 100%), e.g.
+# "efficiency improved by 250%".
+_RELATIVE_CHANGE = re.compile(
+    r"\b(?:improv\w*|increas\w*|decreas\w*|reduc\w*|gain\w*|higher|lower\w*|"
+    r"relativ\w*|baselin\w*|faster|slower|growth)\b|×|\bx\d",
+    re.IGNORECASE)
 
 
 def check_fractions(text, path, fnd):
@@ -124,7 +139,7 @@ def check_fractions(text, path, fnd):
             fnd.error(path, ln, "fraction",
                       f"{v:g}% is outside the valid 0-100% range")
     for line_no, line in enumerate(text.splitlines(), 1):
-        if not _BOUNDED_KEYWORDS.search(line):
+        if not _BOUNDED_KEYWORDS.search(line) or _RELATIVE_CHANGE.search(line):
             continue
         for m in re.finditer(_NUM + r"\s*%(?![a-zA-Z])", line):
             v = _to_float(m.group(1))

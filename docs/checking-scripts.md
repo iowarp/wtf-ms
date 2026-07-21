@@ -20,7 +20,7 @@ dependencies.
 
 It exits non-zero if any **error** is present.
 
-## Why it doesn't just import the script
+## Static checking, not importing
 
 Importing a module runs its top-level code — unsafe on generated code and
 dependent on what's installed. So imports are checked *statically*: a package

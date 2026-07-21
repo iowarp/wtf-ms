@@ -57,7 +57,7 @@ python3 .claude/wtf-ms/scripts/verify_citations.py --json .research/LITERATURE.m
 
 Zero dependencies (Python stdlib only). Crossref needs no API key.
 
-## How it stays honest
+## How the behavior is tested
 
 The extraction and classification logic is pinned by
 `tests/test_verify_citations.py` (network-mocked, runs in CI). Those tests lock

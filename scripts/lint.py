@@ -172,7 +172,7 @@ def check_command(path, text, fnd, command_basenames):
 
 
 def _check_agent_paths(path, body, fnd, rel):
-    repo_root = _repo_root_from(path)
+    repo_root = _REPO_ROOT
     for m in re.finditer(r"\.claude/agents/wtfMS/[\w-]+\.md", body):
         ref = m.group(0)
         if not os.path.isfile(os.path.join(repo_root, ref)):
@@ -181,7 +181,7 @@ def _check_agent_paths(path, body, fnd, rel):
 
 
 def _check_includes(path, body, fnd, rel):
-    repo_root = _repo_root_from(path)
+    repo_root = _REPO_ROOT
     for m in re.finditer(r"@(\.[\w./-]+\.(?:md|json))", body):
         inc = m.group(1)  # e.g. .research/WORKFLOW.md or .claude/wtf-ms/...
         if inc.startswith(".claude/"):
@@ -240,10 +240,8 @@ def check_help_sync(repo_root, command_basenames, fnd):
 
 # ---- helpers --------------------------------------------------------------
 
+# Repo root, set once in main(); the check helpers read it directly.
 _REPO_ROOT = None
-
-def _repo_root_from(path):
-    return _REPO_ROOT
 
 
 def main():

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 check_scripts — "runnable by construction" checks for the code wtf-MS
-generates in computational / data-analysis tasks. A post-processing script
-that doesn't even parse, imports a hallucinated package, or is a silent stub
-is worse than no script: the researcher discovers it only when it crashes.
+generates in computational / data-analysis tasks. A generated script that
+doesn't parse, imports a package that doesn't exist, or is a silent stub
+fails only when the researcher runs it; these checks catch that earlier.
 
-For each generated file this checks, WITHOUT executing anything:
+For each generated file this checks, without executing anything:
 
   Python (.py)
     * syntax        — ast.parse; a SyntaxError is a hard bug          -> ERROR
@@ -39,7 +39,7 @@ import sys
 # Common scientific / materials-science packages an analysis script may import.
 # Anything here OR in sys.stdlib_module_names OR a sibling .py is "recognized".
 KNOWN_PACKAGES = {
-    "numpy", "np", "scipy", "pandas", "matplotlib", "mpl_toolkits", "seaborn",
+    "numpy", "scipy", "pandas", "matplotlib", "mpl_toolkits", "seaborn",
     "sklearn", "skimage", "sympy", "statsmodels", "networkx", "numba", "cython",
     "h5py", "netCDF4", "xarray", "zarr", "plotly", "bokeh", "altair",
     "tensorflow", "torch", "keras", "jax", "jaxlib", "pint", "uncertainties",
@@ -130,15 +130,12 @@ def check_python(text, path, fnd, local_modules):
     # stubs (AST-based) + textual placeholders
     _stub_findings(tree, path, fnd)
     for i, line in enumerate(text.splitlines(), 1):
-        if line.lstrip().startswith("#") is False and _PLACEHOLDER_TEXT.search(line):
-            m = _PLACEHOLDER_TEXT.search(line)
-            fnd.warn(path, i, "placeholder",
-                     f"template placeholder left in code: '{m.group(0)}'")
-        elif line.lstrip().startswith("#") and _PLACEHOLDER_TEXT.search(line):
-            # placeholders in comments are lower-signal but still worth noting
-            m = _PLACEHOLDER_TEXT.search(line)
-            fnd.warn(path, i, "placeholder",
-                     f"placeholder in comment: '{m.group(0)}'")
+        m = _PLACEHOLDER_TEXT.search(line)
+        if not m:
+            continue
+        where = "in comment" if line.lstrip().startswith("#") else "in code"
+        fnd.warn(path, i, "placeholder",
+                 f"template placeholder {where}: '{m.group(0)}'")
 
 
 def check_shell(path, fnd):

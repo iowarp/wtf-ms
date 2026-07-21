@@ -17,24 +17,32 @@ and flags these before they get committed to your research state.
 
 It exits non-zero if any **error** (physical impossibility) is present.
 
-## The design bias: no false positives
+## Keeping false positives low
 
-A guardrail that cries wolf gets ignored, so v1 only asserts what is
-*unconditionally* true. Crucially, **it never flags a value just for being
-negative** — many materials-science quantities are legitimately negative and
-must pass silently:
+v1 only asserts what is unconditionally true. It does not flag a value just
+for being negative, because many materials-science quantities are legitimately
+negative and must pass silently:
 
 - DFT total and formation energies (`-8.35 eV/atom`, `-45 kJ/mol`)
 - compressive stresses (`-250 MPa`)
 - thermal-expansion mismatches, coordinates, gauge pressures
 
-Only quantities that are non-negative *by definition* — absolute temperature,
-density, a bounded fraction — are sign-checked. Ranges written with an en-dash
-(`250–300 W`) or hyphen (`5-10 µm`) are not misread as negative numbers.
+Only quantities that are non-negative by definition — absolute temperature,
+density, a bounded fraction — are sign-checked. Two further cases are handled
+so they don't misfire:
 
-This behavior is pinned by `tests/test_check_physics.py` (run in CI), whose
-most important cases are the negative ones: a battery of valid, including
-legitimately-negative, values that must produce zero findings.
+- A temperature *unit* also appears in signed quantities — differences (`ΔT =
+  -5 K`), rates (`-50 K/s`), and gradients (`-12 K/mm`) — so a negative value
+  is only flagged when it reads as an absolute temperature.
+- A bounded `%` in a relative-change context (`efficiency improved by 250%`) is
+  not flagged, since a relative change can exceed 100%.
+
+Ranges written with an en-dash (`250–300 W`) or hyphen (`5-10 µm`) are not
+misread as negative numbers.
+
+This behavior is pinned by `tests/test_check_physics.py` (run in CI); the
+cases that matter most are the negative ones — valid values, including
+legitimately-negative ones, that must produce zero findings.
 
 ## When it runs
 

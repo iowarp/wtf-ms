@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 verify_citations — resolve the citations in wtf-MS research output against a
-real bibliographic database (Crossref) to catch hallucinated / fabricated
-references, the #1 failure mode of an LLM research assistant.
+real bibliographic database (Crossref) to catch hallucinated or fabricated
+references.
 
 It reads LITERATURE.md and/or .bib files, extracts citation candidates
 (BibTeX entries, and quoted paper titles from the "Key Papers" tables the
@@ -95,8 +95,8 @@ def extract_bibtex(text, source):
     return cites
 
 
-# A quoted title: straight or curly quotes, reasonably long, containing a
-# lowercase letter and a space (rules out short quoted phrases / acronyms).
+# A quoted title: straight or curly quotes wrapping 20+ non-quote characters
+# (the length floor rules out short quoted phrases and acronyms).
 _QUOTED = re.compile(r"[\"“]([^\"”“]{20,})[\"”]")
 
 # An inline citation key like [Gong 2014] or [du Plessis 2019].
@@ -123,9 +123,9 @@ def _is_bibliographic(line):
 def extract_markdown(text, source):
     """
     Extract citation candidates from a LITERATURE.md-style document:
-      * quoted paper titles found ONLY on bibliographic lines (table rows or
-        italic-journal+year lines), with a nearby 4-digit year
-      * inline [Author Year] keys (for placeholder / orphan detection)
+      * quoted paper titles found ONLY on bibliographic lines (markdown table
+        rows — see _is_bibliographic), with a nearby 4-digit year for context
+      * inline [Author Year]-style keys that look like placeholders
     """
     cites = []
     seen_titles = set()
@@ -144,7 +144,7 @@ def extract_markdown(text, source):
             authors = line.split(",")[0].strip(" |*").strip() or None
             cites.append(Cite(title=title, year=year, authors=authors,
                               source=source, raw=line.strip()[:160]))
-    return cites, _extract_inline(text, seen_titles, source)
+    return cites, _extract_inline(text, source)
 
 
 def _surnames(authors):
@@ -186,8 +186,10 @@ def _item_surnames(item):
     return out
 
 
-def _extract_inline(text, titled_norm, source):
-    """Return placeholder-style inline keys that have no titled reference."""
+def _extract_inline(text, source):
+    """Return inline [Author Year]-style keys that look like placeholders
+    (a non-name filler token rather than a real surname, e.g.
+    "[ML domain-discovery 2024]") — these are unverifiable by construction."""
     placeholders = []
     seen = set()
     for m in _INLINE.finditer(text):
@@ -395,8 +397,9 @@ def _print_report(results, counts, offline):
             if bits:
                 print("           " + " | ".join(bits))
     mode = " (offline)" if offline else ""
-    print(f"\nverify-citations{mode}: " +
-          ", ".join(f"{k}={v}" for k, v in sorted(counts.items())) or "no citations found")
+    counts_str = ", ".join(f"{k}={v}" for k, v in sorted(counts.items())) \
+        or "no citations found"
+    print(f"\nverify-citations{mode}: {counts_str}")
     bad = counts.get("NOT_FOUND", 0) + counts.get("MISMATCH", 0)
     if bad:
         print(f"  -> {bad} citation(s) need attention.")
