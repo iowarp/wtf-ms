@@ -9,6 +9,7 @@ allowed-tools:
   - Grep
   - WebSearch
   - WebFetch
+  - Task
   - AskUserQuestion
 ---
 
@@ -80,6 +81,21 @@ Filled prompt includes:
 ## 5. Handle Agent Return
 
 **`## LITERATURE REVIEW COMPLETE`:**
+- **Verify citations (advisory).** Before committing, check the review's
+  references against Crossref to catch hallucinated papers or dead DOIs:
+  ```bash
+  python3 .claude/wtf-ms/scripts/verify_citations.py .research/LITERATURE.md || true
+  ```
+  Act on the results (this is advisory, never a hard block):
+  - **NOT_FOUND** (no real paper matches, or a DOI that Crossref 404s) — treat
+    as likely fabricated. Remove or replace the citation and re-search for a
+    real source; do not leave it in LITERATURE.md.
+  - **MISMATCH** — show the user the flagged citation next to the Crossref
+    match and let them decide (often just a metadata detail to correct).
+  - **UNVERIFIABLE placeholder** — annotate it in LITERATURE.md as
+    "(unverified — finalize against publisher record before citing)".
+  - If every entry comes back UNVERIFIABLE with "offline"/network errors,
+    note that verification was skipped and continue.
 - Update RESEARCH.md with refined keywords (append to Keywords section)
 - Commit:
   ```bash

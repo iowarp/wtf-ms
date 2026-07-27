@@ -10,6 +10,7 @@ allowed-tools:
   - Grep
   - WebSearch
   - WebFetch
+  - Task
   - AskUserQuestion
 ---
 
@@ -127,7 +128,31 @@ Filled prompt includes:
 
 ## 7. Handle Executor Return
 
-**`## TASK COMPLETE`:**
+**`## TASK COMPLETE`:** Before committing, run the advisory guardrails on the
+task's outputs (both are advisory — report and act, never a hard block):
+- **Physical sanity** (all task types) — flag impossible/implausible values:
+  ```bash
+  python3 .claude/wtf-ms/scripts/check_physics.py .research/tasks/task-[NN]/*.md 2>/dev/null || true
+  ```
+  Fix any **IMPOSSIBLE** values (below absolute zero, non-positive density,
+  out-of-range fractions) — these are errors in the generated output. Review
+  **IMPLAUSIBLE** warnings (absurd density, composition not summing to ~100%)
+  with the user.
+- **Citations** — if the task produced a `.bib` file or reference list:
+  ```bash
+  python3 .claude/wtf-ms/scripts/verify_citations.py .research/tasks/task-[NN]/*.bib .research/tasks/task-[NN]/*summary*.md 2>/dev/null || true
+  ```
+  Drop/replace **NOT_FOUND** citations and re-search, surface **MISMATCH** to
+  the user, annotate **UNVERIFIABLE** placeholders. See the literature-review
+  command for the full policy.
+- **Generated scripts** — if the task produced `.py` or `.sh` files
+  (`computational`, `data-analysis`):
+  ```bash
+  python3 .claude/wtf-ms/scripts/check_scripts.py .research/tasks/task-[NN]/*.py .research/tasks/task-[NN]/*.sh 2>/dev/null || true
+  ```
+  Fix any **WILL NOT RUN** errors (syntax) — the script would crash on first
+  run. Review **SUSPECT** warnings (hallucinated imports, stubs, leftover
+  placeholders) and complete/correct them before handing the script over.
 - Mark task as `☑ complete` in WORKFLOW.md
 - Update STATE.md: current task = N+1
 - Commit:

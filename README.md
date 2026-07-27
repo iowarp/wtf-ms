@@ -77,6 +77,25 @@ wtfp (→ wtf-p paper writing system)
 | `analytical` | Mathematical modeling, derivations, validation |
 | `writing` | Bridge to `/wtfMS:wtfp` |
 
+## Research Integrity
+
+wtf-MS guards against the "plausible but wrong" failure modes of an LLM
+research assistant with automated, advisory checks (they report and the agent
+acts; they never hard-block):
+
+- **Citation verification** — references are resolved against
+  [Crossref](https://www.crossref.org/) to catch hallucinated papers and dead
+  DOIs before they land in your research state.
+  See [docs/verifying-citations.md](docs/verifying-citations.md).
+- **Physical sanity checks** — generated task outputs are scanned for
+  physically impossible values (below absolute zero, negative density,
+  out-of-range fractions, compositions that don't sum to 100%).
+  See [docs/checking-physics.md](docs/checking-physics.md).
+- **Runnable-by-construction checks** — generated analysis/simulation scripts
+  are parsed (never executed) to catch syntax errors, hallucinated imports, and
+  silent stubs before you try to run them.
+  See [docs/checking-scripts.md](docs/checking-scripts.md).
+
 ## Research Domains Supported
 
 - Structural materials (metals, HEAs, ceramics, composites)
