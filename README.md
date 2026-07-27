@@ -54,6 +54,7 @@ wtfp (→ wtf-p paper writing system)
 |---------|-------------|
 | `/wtfMS:status` | Full project dashboard |
 | `/wtfMS:progress` | Statusline + smart routing to next action |
+| `/wtfMS:cost` | Token usage + estimated cost per step ([setup](docs/recording-metrics.md)) |
 | `/wtfMS:pause-research` | Pause + auto-checkpoint |
 | `/wtfMS:resume-research` | Resume from paused state |
 | `/wtfMS:checkpoint save [label]` | Save state snapshot |

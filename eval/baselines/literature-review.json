@@ -1,0 +1,48 @@
+{
+  "step": "literature-review",
+  "model": "sonnet",
+  "band": 0.2,
+  "metrics": {
+    "total_cost_usd": {
+      "mean": 0.9764461999999999,
+      "n": 3
+    },
+    "input_tokens": {
+      "mean": 22.666666666666668,
+      "n": 3
+    },
+    "cache_creation_input_tokens": {
+      "mean": 25627.666666666668,
+      "n": 3
+    },
+    "cache_read_input_tokens": {
+      "mean": 599886.6666666666,
+      "n": 3
+    },
+    "output_tokens": {
+      "mean": 8568.0,
+      "n": 3
+    },
+    "num_turns": {
+      "mean": 11.666666666666666,
+      "n": 3
+    },
+    "duration_ms": {
+      "mean": 248291.66666666666,
+      "n": 3
+    },
+    "duration_api_ms": {
+      "mean": 278881.3333333333,
+      "n": 3
+    },
+    "web_search_requests": {
+      "mean": 0.0,
+      "n": 3
+    },
+    "web_fetch_requests": {
+      "mean": 0.0,
+      "n": 3
+    }
+  },
+  "checks": {}
+}

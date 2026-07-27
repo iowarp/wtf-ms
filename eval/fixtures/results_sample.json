@@ -1,0 +1,395 @@
+{
+  "run_id": "20260722T120000",
+  "step": "literature-review",
+  "command": "/wtfMS:literature-review",
+  "model": "opus",
+  "reps": 3,
+  "session": "fresh",
+  "seed_session": null,
+  "seed": null,
+  "cells": [
+    {
+      "tag": "r1",
+      "rep": 1,
+      "attempts": 1,
+      "record": {
+        "ok": true,
+        "error_kind": "none",
+        "artifact_bytes": 4096,
+        "total_cost_usd": 1.0,
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 48003,
+        "cache_read_input_tokens": 195177,
+        "output_tokens": 5239,
+        "num_turns": 4,
+        "duration_ms": 239522,
+        "duration_api_ms": 238654,
+        "web_search_requests": 0,
+        "web_fetch_requests": 0,
+        "model_usage": {
+          "claude-sonnet-5": {
+            "cost_usd": 0.8752788,
+            "output_tokens": 21852,
+            "input_tokens": 16,
+            "cache_read_input_tokens": 303526,
+            "cache_creation_input_tokens": 92903
+          }
+        }
+      }
+    },
+    {
+      "tag": "r2",
+      "rep": 2,
+      "attempts": 1,
+      "record": {
+        "ok": true,
+        "error_kind": "none",
+        "artifact_bytes": 4096,
+        "total_cost_usd": 1.1,
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 48003,
+        "cache_read_input_tokens": 195177,
+        "output_tokens": 5239,
+        "num_turns": 4,
+        "duration_ms": 239522,
+        "duration_api_ms": 238654,
+        "web_search_requests": 0,
+        "web_fetch_requests": 0,
+        "model_usage": {
+          "claude-sonnet-5": {
+            "cost_usd": 0.8752788,
+            "output_tokens": 21852,
+            "input_tokens": 16,
+            "cache_read_input_tokens": 303526,
+            "cache_creation_input_tokens": 92903
+          }
+        }
+      }
+    },
+    {
+      "tag": "r3",
+      "rep": 3,
+      "attempts": 1,
+      "record": {
+        "ok": false,
+        "error_kind": "api-429",
+        "artifact_bytes": 0,
+        "total_cost_usd": 1.0028508500000002,
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0,
+        "num_turns": 1,
+        "duration_ms": 612,
+        "duration_api_ms": 329725,
+        "web_search_requests": 0,
+        "web_fetch_requests": 0,
+        "model_usage": {
+          "claude-haiku-4-5-20251001": {
+            "cost_usd": 0.28110199999999996,
+            "output_tokens": 5762,
+            "input_tokens": 132292,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 0
+          },
+          "claude-sonnet-5": {
+            "cost_usd": 0.72174885,
+            "output_tokens": 22219,
+            "input_tokens": 1349,
+            "cache_read_input_tokens": 433712,
+            "cache_creation_input_tokens": 64984
+          }
+        }
+      }
+    }
+  ],
+  "checks": {
+    "citations": {
+      "disable_suffix": "skip verify",
+      "cells": [
+        {
+          "tag": "citations:r1",
+          "rep": 1,
+          "attempts": 1,
+          "record": {
+            "ok": true,
+            "error_kind": "none",
+            "artifact_bytes": 4096,
+            "total_cost_usd": 0.95,
+            "input_tokens": 8,
+            "cache_creation_input_tokens": 48003,
+            "cache_read_input_tokens": 195177,
+            "output_tokens": 5239,
+            "num_turns": 4,
+            "duration_ms": 239522,
+            "duration_api_ms": 238654,
+            "web_search_requests": 0,
+            "web_fetch_requests": 0,
+            "model_usage": {
+              "claude-sonnet-5": {
+                "cost_usd": 0.8752788,
+                "output_tokens": 21852,
+                "input_tokens": 16,
+                "cache_read_input_tokens": 303526,
+                "cache_creation_input_tokens": 92903
+              }
+            }
+          }
+        },
+        {
+          "tag": "citations:r2",
+          "rep": 2,
+          "attempts": 1,
+          "record": {
+            "ok": true,
+            "error_kind": "none",
+            "artifact_bytes": 4096,
+            "total_cost_usd": 1.0,
+            "input_tokens": 8,
+            "cache_creation_input_tokens": 48003,
+            "cache_read_input_tokens": 195177,
+            "output_tokens": 5239,
+            "num_turns": 4,
+            "duration_ms": 239522,
+            "duration_api_ms": 238654,
+            "web_search_requests": 0,
+            "web_fetch_requests": 0,
+            "model_usage": {
+              "claude-sonnet-5": {
+                "cost_usd": 0.8752788,
+                "output_tokens": 21852,
+                "input_tokens": 16,
+                "cache_read_input_tokens": 303526,
+                "cache_creation_input_tokens": 92903
+              }
+            }
+          }
+        },
+        {
+          "tag": "citations:r3",
+          "rep": 3,
+          "attempts": 1,
+          "record": {
+            "ok": true,
+            "error_kind": "none",
+            "artifact_bytes": 4096,
+            "total_cost_usd": 1.05,
+            "input_tokens": 8,
+            "cache_creation_input_tokens": 48003,
+            "cache_read_input_tokens": 195177,
+            "output_tokens": 5239,
+            "num_turns": 4,
+            "duration_ms": 239522,
+            "duration_api_ms": 238654,
+            "web_search_requests": 0,
+            "web_fetch_requests": 0,
+            "model_usage": {
+              "claude-sonnet-5": {
+                "cost_usd": 0.8752788,
+                "output_tokens": 21852,
+                "input_tokens": 16,
+                "cache_read_input_tokens": 303526,
+                "cache_creation_input_tokens": 92903
+              }
+            }
+          }
+        }
+      ],
+      "aggregate": {
+        "n_total": 3,
+        "n_ok": 3,
+        "error_kinds": {},
+        "metrics": {
+          "total_cost_usd": {
+            "n": 3,
+            "mean": 1.0,
+            "min": 0.95,
+            "max": 1.05,
+            "stdev": 0.04082482904638634
+          },
+          "input_tokens": {
+            "n": 3,
+            "mean": 8.0,
+            "min": 8,
+            "max": 8,
+            "stdev": 0.0
+          },
+          "cache_creation_input_tokens": {
+            "n": 3,
+            "mean": 48003.0,
+            "min": 48003,
+            "max": 48003,
+            "stdev": 0.0
+          },
+          "cache_read_input_tokens": {
+            "n": 3,
+            "mean": 195177.0,
+            "min": 195177,
+            "max": 195177,
+            "stdev": 0.0
+          },
+          "output_tokens": {
+            "n": 3,
+            "mean": 5239.0,
+            "min": 5239,
+            "max": 5239,
+            "stdev": 0.0
+          },
+          "num_turns": {
+            "n": 3,
+            "mean": 4.0,
+            "min": 4,
+            "max": 4,
+            "stdev": 0.0
+          },
+          "duration_ms": {
+            "n": 3,
+            "mean": 239522.0,
+            "min": 239522,
+            "max": 239522,
+            "stdev": 0.0
+          },
+          "duration_api_ms": {
+            "n": 3,
+            "mean": 238654.0,
+            "min": 238654,
+            "max": 238654,
+            "stdev": 0.0
+          },
+          "web_search_requests": {
+            "n": 3,
+            "mean": 0.0,
+            "min": 0,
+            "max": 0,
+            "stdev": 0.0
+          },
+          "web_fetch_requests": {
+            "n": 3,
+            "mean": 0.0,
+            "min": 0,
+            "max": 0,
+            "stdev": 0.0
+          }
+        },
+        "model_usage": {
+          "claude-sonnet-5": {
+            "n": 3,
+            "cost_usd": {
+              "n": 3,
+              "mean": 0.8752787999999999,
+              "min": 0.8752788,
+              "max": 0.8752788,
+              "stdev": 1.1102230246251565e-16
+            },
+            "output_tokens": {
+              "n": 3,
+              "mean": 21852.0,
+              "min": 21852,
+              "max": 21852,
+              "stdev": 0.0
+            }
+          }
+        }
+      },
+      "increment_usd": 0.050000000000000044
+    }
+  },
+  "aggregate": {
+    "n_total": 3,
+    "n_ok": 2,
+    "error_kinds": {
+      "api-429": 1
+    },
+    "metrics": {
+      "total_cost_usd": {
+        "n": 2,
+        "mean": 1.05,
+        "min": 1.0,
+        "max": 1.1,
+        "stdev": 0.050000000000000044
+      },
+      "input_tokens": {
+        "n": 2,
+        "mean": 8.0,
+        "min": 8,
+        "max": 8,
+        "stdev": 0.0
+      },
+      "cache_creation_input_tokens": {
+        "n": 2,
+        "mean": 48003.0,
+        "min": 48003,
+        "max": 48003,
+        "stdev": 0.0
+      },
+      "cache_read_input_tokens": {
+        "n": 2,
+        "mean": 195177.0,
+        "min": 195177,
+        "max": 195177,
+        "stdev": 0.0
+      },
+      "output_tokens": {
+        "n": 2,
+        "mean": 5239.0,
+        "min": 5239,
+        "max": 5239,
+        "stdev": 0.0
+      },
+      "num_turns": {
+        "n": 2,
+        "mean": 4.0,
+        "min": 4,
+        "max": 4,
+        "stdev": 0.0
+      },
+      "duration_ms": {
+        "n": 2,
+        "mean": 239522.0,
+        "min": 239522,
+        "max": 239522,
+        "stdev": 0.0
+      },
+      "duration_api_ms": {
+        "n": 2,
+        "mean": 238654.0,
+        "min": 238654,
+        "max": 238654,
+        "stdev": 0.0
+      },
+      "web_search_requests": {
+        "n": 2,
+        "mean": 0.0,
+        "min": 0,
+        "max": 0,
+        "stdev": 0.0
+      },
+      "web_fetch_requests": {
+        "n": 2,
+        "mean": 0.0,
+        "min": 0,
+        "max": 0,
+        "stdev": 0.0
+      }
+    },
+    "model_usage": {
+      "claude-sonnet-5": {
+        "n": 2,
+        "cost_usd": {
+          "n": 2,
+          "mean": 0.8752788,
+          "min": 0.8752788,
+          "max": 0.8752788,
+          "stdev": 0.0
+        },
+        "output_tokens": {
+          "n": 2,
+          "mean": 21852.0,
+          "min": 21852,
+          "max": 21852,
+          "stdev": 0.0
+        }
+      }
+    }
+  }
+}

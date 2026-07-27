@@ -1,0 +1,20 @@
+{
+  "name": "define-virtual-lab",
+  "description": "/wtfMS:define-virtual-lab measured from a frozen post-literature-review state. Maps available resources into VIRTUAL-LAB.md.",
+  "model": "opus",
+  "reps": 3,
+  "session": "fresh",
+  "state": {
+    "reset": "backup",
+    "paths": [
+      ".research"
+    ]
+  },
+  "fixture": "eval/fixtures/state/after-literature-review",
+  "measure": {
+    "command": "/wtfMS:define-virtual-lab",
+    "prompt": "/wtfMS:define-virtual-lab\n\nRun FULLY AUTONOMOUSLY: do NOT call AskUserQuestion, do NOT run any git commands (no init/add/commit). Use reasonable defaults for anything unspecified. Complete the whole skill end-to-end.\n\nUse Quick mode. Resources available for this project: literature only (published\npapers + public datasets); laptop-scale statistical analysis in Python\n(pandas, numpy, scipy, matplotlib); no experimental lab; no HPC; no external\ncollaborations. Map these into .research/VIRTUAL-LAB.md via the wtfms-lab-definer\nsubagent. Stop at VIRTUAL LAB DEFINED.",
+    "timeout": 900,
+    "artifact": ".research/VIRTUAL-LAB.md"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "literature-review",
+  "description": "/wtfMS:literature-review measured in isolation from a frozen post-identify .research state. Its normal cost includes the citation guardrail; --price-checks reports what that check adds.",
+  "model": "opus",
+  "reps": 3,
+  "session": "fresh",
+  "state": {
+    "reset": "backup",
+    "paths": [
+      ".research"
+    ]
+  },
+  "fixture": "eval/fixtures/state/after-identify",
+  "measure": {
+    "command": "/wtfMS:literature-review",
+    "prompt": "/wtfMS:literature-review\n\nRun FULLY AUTONOMOUSLY: do NOT call AskUserQuestion, do NOT run any git commands (no init/add/commit). Use reasonable defaults for anything unspecified. Complete the whole skill end-to-end.\n\nUse the current scope from RESEARCH.md; emphasis on the last 10 years. Write\n.research/LITERATURE.md via the literature-reviewer subagent. Stop at\nLITERATURE REVIEW COMPLETE.",
+    "timeout": 1200,
+    "artifact": ".research/LITERATURE.md"
+  },
+  "checks": [
+    {
+      "name": "citations",
+      "disable_suffix": "Skip the citation-verification step entirely: do NOT run verify_citations.py and do NOT re-check or edit citations against any external database. Write LITERATURE.md from the reviewer's output as-is."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "identify-research",
+  "description": "First step of the pipeline: /wtfMS:identify-research from an empty workspace, producing RESEARCH.md. Seedless -- each rep starts clean. A real end-to-end run also snapshots its output into fixtures/state/after-identify to seed the next step.",
+  "model": "opus",
+  "reps": 3,
+  "session": "fresh",
+  "state": {
+    "reset": "backup",
+    "paths": [
+      ".research"
+    ]
+  },
+  "measure": {
+    "command": "/wtfMS:identify-research",
+    "prompt": "/wtfMS:identify-research\n\nRun FULLY AUTONOMOUSLY: do NOT call AskUserQuestion, do NOT run any git commands (no init/add/commit). Use reasonable defaults for anything unspecified. Complete the whole skill end-to-end.\n\nInputs:\n- Domain: Structural materials / additive manufacturing (laser powder bed fusion)\n- Driving question: Which LPBF process-parameter combinations (laser power, scan\n  speed, hatch spacing, layer thickness, volumetric energy density) minimize\n  porosity and lack-of-fusion defects in Ti-6Al-4V, and what processing map can\n  be extracted from published process-defect datasets?\n- Motivation: process-parameter optimization to minimize defects (literature synthesis)\n- Resources: literature only (published papers + public datasets); laptop-scale\n  statistical analysis; no lab, no HPC\n- Career stage: industry researcher; Timeline: flexible; Constraints: none\n\nWrite .research/RESEARCH.md via the research-explorer subagent. Stop at RESEARCH IDENTIFIED.",
+    "timeout": 900,
+    "artifact": ".research/RESEARCH.md"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "execute-task",
+  "description": "/wtfMS:execute-task 1 measured from a frozen post-workflow state. Executes the first workflow task. Cost varies by task type -- this baselines task 1 specifically, not execute-task in general.",
+  "model": "opus",
+  "reps": 3,
+  "session": "fresh",
+  "state": {
+    "reset": "backup",
+    "paths": [
+      ".research"
+    ]
+  },
+  "fixture": "eval/fixtures/state/after-research-tasks",
+  "measure": {
+    "command": "/wtfMS:execute-task 1",
+    "prompt": "/wtfMS:execute-task 1\n\nRun FULLY AUTONOMOUSLY: do NOT call AskUserQuestion, do NOT run any git commands (no init/add/commit). Use reasonable defaults for anything unspecified. Complete the whole skill end-to-end.\n\nExecute task 1 from WORKFLOW.md via the wtfms-task-executor subagent, writing its\noutputs under .research/tasks/. Stop at TASK COMPLETE.",
+    "timeout": 1500,
+    "artifact": null
+  }
+}
