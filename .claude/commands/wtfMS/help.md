@@ -62,6 +62,7 @@ PROGRESS & CONTROL
 ─────────────────────────────────────────
  /wtfMS:status             Full project dashboard
  /wtfMS:progress           Statusline + smart routing
+ /wtfMS:cost               Token usage + est. cost per step
  /wtfMS:pause-research     Pause + auto-checkpoint
  /wtfMS:resume-research    Resume from paused state
  /wtfMS:checkpoint save [label]   Save state snapshot

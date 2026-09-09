@@ -5,5 +5,9 @@ _tmp_harness/
 __pycache__/
 *.pyc
 
+# Eval run artifacts (paid, non-deterministic). Scenarios, baselines, and
+# fixtures ARE tracked; per-run outputs are not.
+eval/results/
+
 # Local HDF5 demo logs (binary; keep out of the repo)
 demologs/

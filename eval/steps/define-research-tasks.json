@@ -1,0 +1,20 @@
+{
+  "name": "define-research-tasks",
+  "description": "/wtfMS:define-research-tasks measured from a frozen post-virtual-lab state. Builds the WORKFLOW.md task list.",
+  "model": "opus",
+  "reps": 3,
+  "session": "fresh",
+  "state": {
+    "reset": "backup",
+    "paths": [
+      ".research"
+    ]
+  },
+  "fixture": "eval/fixtures/state/after-virtual-lab",
+  "measure": {
+    "command": "/wtfMS:define-research-tasks",
+    "prompt": "/wtfMS:define-research-tasks\n\nRun FULLY AUTONOMOUSLY: do NOT call AskUserQuestion, do NOT run any git commands (no init/add/commit). Use reasonable defaults for anything unspecified. Complete the whole skill end-to-end.\n\nBuild the workflow from scratch for this literature-synthesis project. Use a\nsensible ~4-task plan: (1) extract process-defect datapoints from the published\nLPBF Ti-6Al-4V literature, (2) compile and clean them into one analysis dataset,\n(3) statistical analysis + build the VED-based defect processing map, (4)\nsynthesize findings and limitations. Make reasonable assumptions per task. Write\n.research/WORKFLOW.md via the wtfms-workflow-planner subagent. Stop at WORKFLOW COMPLETE.",
+    "timeout": 900,
+    "artifact": ".research/WORKFLOW.md"
+  }
+}

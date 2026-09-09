@@ -20,3 +20,11 @@ jobs:
           python3 tests/test_verify_citations.py
           python3 tests/test_check_physics.py
           python3 tests/test_check_scripts.py
+          python3 tests/test_record_metrics.py
+      - name: Run eval harness unit tests (offline; no spend)
+        run: |
+          python3 eval/tests/test_metrics.py
+          python3 eval/tests/test_state.py
+          python3 eval/tests/test_report_baseline.py
+          python3 eval/tests/test_steps.py
+          python3 eval/tests/test_run_integration.py

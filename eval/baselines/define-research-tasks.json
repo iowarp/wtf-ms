@@ -1,0 +1,48 @@
+{
+  "step": "define-research-tasks",
+  "model": "sonnet",
+  "band": 0.2,
+  "metrics": {
+    "total_cost_usd": {
+      "mean": 0.5598508333333333,
+      "n": 3
+    },
+    "input_tokens": {
+      "mean": 14.666666666666666,
+      "n": 3
+    },
+    "cache_creation_input_tokens": {
+      "mean": 24057.0,
+      "n": 3
+    },
+    "cache_read_input_tokens": {
+      "mean": 450875.0,
+      "n": 3
+    },
+    "output_tokens": {
+      "mean": 5421.0,
+      "n": 3
+    },
+    "num_turns": {
+      "mean": 7.666666666666667,
+      "n": 3
+    },
+    "duration_ms": {
+      "mean": 149191.66666666666,
+      "n": 3
+    },
+    "duration_api_ms": {
+      "mean": 154562.0,
+      "n": 3
+    },
+    "web_search_requests": {
+      "mean": 0.0,
+      "n": 3
+    },
+    "web_fetch_requests": {
+      "mean": 0.0,
+      "n": 3
+    }
+  },
+  "checks": {}
+}

@@ -1,0 +1,48 @@
+{
+  "step": "identify-research",
+  "model": "sonnet",
+  "band": 0.2,
+  "metrics": {
+    "total_cost_usd": {
+      "mean": 0.3385265333333334,
+      "n": 3
+    },
+    "input_tokens": {
+      "mean": 9.333333333333334,
+      "n": 3
+    },
+    "cache_creation_input_tokens": {
+      "mean": 11638.333333333334,
+      "n": 3
+    },
+    "cache_read_input_tokens": {
+      "mean": 195716.33333333334,
+      "n": 3
+    },
+    "output_tokens": {
+      "mean": 2755.6666666666665,
+      "n": 3
+    },
+    "num_turns": {
+      "mean": 4.666666666666667,
+      "n": 3
+    },
+    "duration_ms": {
+      "mean": 88530.33333333333,
+      "n": 3
+    },
+    "duration_api_ms": {
+      "mean": 89027.0,
+      "n": 3
+    },
+    "web_search_requests": {
+      "mean": 0.0,
+      "n": 3
+    },
+    "web_fetch_requests": {
+      "mean": 0.0,
+      "n": 3
+    }
+  },
+  "checks": {}
+}

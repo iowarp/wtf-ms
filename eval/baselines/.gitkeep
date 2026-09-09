@@ -1,0 +1,3 @@
+# Baselines live here.
+# Committed baseline files (one per step) are produced from a real
+# `--live` run via: python3 eval/baseline.py <results.json> --update

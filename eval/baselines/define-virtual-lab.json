@@ -1,0 +1,48 @@
+{
+  "step": "define-virtual-lab",
+  "model": "sonnet",
+  "band": 0.2,
+  "metrics": {
+    "total_cost_usd": {
+      "mean": 0.4275848,
+      "n": 3
+    },
+    "input_tokens": {
+      "mean": 6.666666666666667,
+      "n": 3
+    },
+    "cache_creation_input_tokens": {
+      "mean": 9310.666666666666,
+      "n": 3
+    },
+    "cache_read_input_tokens": {
+      "mean": 183236.33333333334,
+      "n": 3
+    },
+    "output_tokens": {
+      "mean": 2952.3333333333335,
+      "n": 3
+    },
+    "num_turns": {
+      "mean": 3.3333333333333335,
+      "n": 3
+    },
+    "duration_ms": {
+      "mean": 71355.0,
+      "n": 3
+    },
+    "duration_api_ms": {
+      "mean": 98750.33333333333,
+      "n": 3
+    },
+    "web_search_requests": {
+      "mean": 0.0,
+      "n": 3
+    },
+    "web_fetch_requests": {
+      "mean": 0.0,
+      "n": 3
+    }
+  },
+  "checks": {}
+}

@@ -1,0 +1,60 @@
+{
+  "type": "result",
+  "subtype": "success",
+  "is_error": true,
+  "api_error_status": 429,
+  "duration_ms": 612,
+  "duration_api_ms": 329725,
+  "num_turns": 1,
+  "result": "You've hit your session limit \u00b7 resets 2pm (America/Chicago)",
+  "stop_reason": "stop_sequence",
+  "session_id": "b55c9a29-c93b-4437-bad6-8a71239e538f",
+  "total_cost_usd": 1.0028508500000002,
+  "usage": {
+    "input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 0,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "",
+    "iterations": [],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 132292,
+      "outputTokens": 5762,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 12,
+      "costUSD": 0.28110199999999996,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000
+    },
+    "claude-sonnet-5": {
+      "inputTokens": 1349,
+      "outputTokens": 22219,
+      "cacheReadInputTokens": 433712,
+      "cacheCreationInputTokens": 64984,
+      "webSearchRequests": 0,
+      "costUSD": 0.72174885,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "api_error",
+  "fast_mode_state": "off",
+  "origin": {
+    "kind": "task-notification"
+  },
+  "uuid": "0c2174da-fd59-4489-9c48-bbc627ea6079"
+}
