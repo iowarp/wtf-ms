@@ -1,7 +1,7 @@
 # Recording token metrics during normal use
 
-`.claude/wtf-ms/scripts/record_metrics.py` logs how many tokens each research
-step uses as you work, so `/wtfMS:cost` can show a per-step breakdown. Tokens
+The plugin's `wtf-ms/scripts/record_metrics.py` logs how many tokens each
+research step uses as you work, so `/wtfMS:cost` can show a per-step breakdown. Tokens
 are exact; the dollar figure is an estimate. Collection is passive — it runs
 from a Claude Code hook, not from a command — so the numbers accrue on their own.
 
@@ -9,37 +9,17 @@ This is separate from the `eval/` benchmark. The benchmark measures steps under
 controlled, repeated conditions to catch regressions when the system changes;
 this measures your real sessions.
 
-## Install the hook
+## Collection is automatic
 
-One-time setup, per project. Add `Stop` and `SubagentStop` hooks to your
-project's `.claude/settings.json`, both running the same script:
+The hooks ship with the plugin in `hooks/hooks.json`, so there is nothing to
+install. `Stop` and `SubagentStop` both run
+`${CLAUDE_PLUGIN_ROOT}/wtf-ms/scripts/record_metrics.py`, which returns
+immediately unless the working directory contains a `.research/` directory.
+Projects that do not use wtf-MS are unaffected.
 
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/wtf-ms/scripts/record_metrics.py\""
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/wtf-ms/scripts/record_metrics.py\""
-          }
-        ]
-      }
-    ]
-  }
-}
-```
+Before wtf-MS was packaged as a plugin these hooks were added by hand to a
+project's `.claude/settings.json`. That is no longer possible or necessary: the
+script lives inside the installed plugin, not in your project.
 
 `Stop` fires when Claude finishes a turn (the orchestrator); `SubagentStop`
 fires when a subagent finishes and hands over the subagent's own transcript. The script reads whichever transcript it's given and appends any new
@@ -47,8 +27,8 @@ messages to `.research/metrics.jsonl`. It writes nothing unless `.research/`
 exists, so it's inert outside a wtf-MS project, and it swallows its own errors
 so a bad run can never interrupt your session.
 
-Install only `Stop` and you still get numbers — just orchestrator-side, missing
-the subagents.
+Both hooks ship together, so a step's total already includes the work its
+subagent did.
 
 Then view the report any time:
 
@@ -59,7 +39,7 @@ Then view the report any time:
 or directly:
 
 ```
-python3 .claude/wtf-ms/scripts/record_metrics.py --report
+python3 ${CLAUDE_PLUGIN_ROOT}/wtf-ms/scripts/record_metrics.py --report
 ```
 
 ## What it counts, and what it misses

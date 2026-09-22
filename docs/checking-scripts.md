@@ -4,7 +4,7 @@
 `task-NN-analysis.py`, a `task-NN-run.sh` submission script. A script that
 doesn't parse, imports a hallucinated package, or is a silent stub is worse
 than no script: the researcher finds out only when it crashes.
-`.claude/wtf-ms/scripts/check_scripts.py` checks generated scripts **without
+`wtf-ms/scripts/check_scripts.py` checks generated scripts **without
 executing them**, so it is safe on untrusted code and has no environment
 dependencies.
 
@@ -26,10 +26,11 @@ Importing a module runs its top-level code — unsafe on generated code and
 dependent on what's installed. So imports are checked *statically*: a package
 being importable in the user's environment is deliberately **not** required
 (that would false-positive in CI or a fresh env). The import check only asks
-"is this a real, correctly-spelled package name?", matching against
-`sys.stdlib_module_names`, a curated list of common scientific/MS packages
-(numpy, scipy, pandas, ase, pymatgen, MDAnalysis, …), and any sibling `.py`
-being checked in the same run.
+"is this a real, correctly-spelled package name?", matching against the
+standard library (`sys.stdlib_module_names` on Python 3.10+; a small built-in
+fallback set on older interpreters, so 3.9 still runs), a curated list of
+common scientific/MS packages (numpy, scipy, pandas, ase, pymatgen,
+MDAnalysis, …), and any sibling `.py` being checked in the same run.
 
 Recognized-package coverage is a curated set — a legitimate but niche package
 can produce an `import` warning. That is advisory: confirm the spelling and
@@ -44,8 +45,8 @@ move on. Extend `KNOWN_PACKAGES` at the top of the script if a package recurs.
 ## Running it manually
 
 ```bash
-python3 .claude/wtf-ms/scripts/check_scripts.py .research/tasks/task-01/*.py .research/tasks/task-01/*.sh
-python3 .claude/wtf-ms/scripts/check_scripts.py --json task-01-analysis.py
+python3 wtf-ms/scripts/check_scripts.py .research/tasks/task-01/*.py .research/tasks/task-01/*.sh
+python3 wtf-ms/scripts/check_scripts.py --json task-01-analysis.py
 ```
 
 Zero third-party dependencies.

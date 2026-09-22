@@ -11,7 +11,7 @@ import tempfile
 import unittest
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_MOD = os.path.join(_HERE, "..", ".claude", "wtf-ms", "scripts",
+_MOD = os.path.join(_HERE, "..", "wtf-ms", "scripts",
                     "check_scripts.py")
 _spec = importlib.util.spec_from_file_location("check_scripts", _MOD)
 cs = importlib.util.module_from_spec(_spec)
@@ -22,6 +22,30 @@ def run_py(text, local=None):
     fnd = cs.Findings()
     cs.check_python(text, "t.py", fnd, local or set())
     return fnd
+
+
+class TestStdlibFallback(unittest.TestCase):
+    def test_works_without_sys_stdlib_module_names(self):
+        # Python < 3.10 has no sys.stdlib_module_names; simulate that.
+        import sys
+        saved = getattr(sys, "stdlib_module_names", None)
+        if saved is not None:
+            del sys.stdlib_module_names
+        try:
+            names = cs.stdlib_names()
+            self.assertTrue({"os", "sys", "json", "re", "pathlib"} <= names)
+            f = run_py("import os, json\nfrom pathlib import Path\n")
+            self.assertEqual(f.warnings, [])
+            self.assertEqual(f.errors, [])
+        finally:
+            if saved is not None:
+                sys.stdlib_module_names = saved
+
+    def test_uses_sys_stdlib_module_names_when_present(self):
+        import sys
+        if not hasattr(sys, "stdlib_module_names"):
+            self.skipTest("interpreter lacks sys.stdlib_module_names")
+        self.assertEqual(cs.stdlib_names(), set(sys.stdlib_module_names))
 
 
 class TestSyntax(unittest.TestCase):

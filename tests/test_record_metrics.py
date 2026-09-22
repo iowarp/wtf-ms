@@ -14,7 +14,7 @@ import tempfile
 import unittest
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_MOD = os.path.join(_HERE, "..", ".claude", "wtf-ms", "scripts", "record_metrics.py")
+_MOD = os.path.join(_HERE, "..", "wtf-ms", "scripts", "record_metrics.py")
 _spec = importlib.util.spec_from_file_location("record_metrics", _MOD)
 rm = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(rm)

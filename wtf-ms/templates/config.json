@@ -1,0 +1,7 @@
+{
+  "model_profile": "balanced",
+  "web_search": true,
+  "auto_checkpoint": true,
+  "commit_research": false,
+  "data_dir": ".research/data"
+}

@@ -3,7 +3,7 @@
 After fabricated citations, the next class of "plausible but wrong" LLM output
 is **physically impossible numbers** — a temperature below absolute zero, a
 negative density, a porosity of 120%, an alloy whose composition doesn't sum to
-100%. `.claude/wtf-ms/scripts/check_physics.py` scans a task's generated outputs
+100%. `wtf-ms/scripts/check_physics.py` scans a task's generated outputs
 and flags these before they get committed to your research state.
 
 ## What it checks
@@ -53,8 +53,8 @@ an **advisory** step before committing — fix `IMPOSSIBLE` errors, review
 ## Running it manually
 
 ```bash
-python3 .claude/wtf-ms/scripts/check_physics.py .research/tasks/task-01/*.md
-python3 .claude/wtf-ms/scripts/check_physics.py --json protocol.md
+python3 wtf-ms/scripts/check_physics.py .research/tasks/task-01/*.md
+python3 wtf-ms/scripts/check_physics.py --json protocol.md
 ```
 
 Zero dependencies (Python stdlib only).

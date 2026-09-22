@@ -1,0 +1,25 @@
+{
+  "name": "wtf-ms",
+  "owner": {
+    "name": "akougkas",
+    "url": "https://github.com/akougkas"
+  },
+  "metadata": {
+    "description": "wtf-MS material science research planning and automation system.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "wtfMS",
+      "source": "./",
+      "description": "Material science research planning and automation: framing, literature review, virtual lab, workflow, execution.",
+      "version": "0.1.0",
+      "author": {
+        "name": "akougkas"
+      },
+      "homepage": "https://github.com/akougkas/wtf-ms",
+      "repository": "https://github.com/akougkas/wtf-ms",
+      "license": "MIT"
+    }
+  ]
+}

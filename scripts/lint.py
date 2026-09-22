@@ -7,14 +7,21 @@ definitions plus templates/references. This linter checks the deterministic
 surface of those files so structural breakage is caught before runtime:
 
   1. frontmatter    — parses; has name + description; name matches filename
-  2. task-tool      — a command that spawns a subagent via Task(...) must
-                      list `Task` in allowed-tools
-  3. static-include — @.claude/... @-includes must resolve on disk
-  4. agent-path     — .claude/agents/wtfMS/<x>.md paths referenced in a
-                      command body must exist
-  5. tool-names     — every allowed-tools entry is a known Claude Code tool
+  2. task-tool      — a command that spawns a subagent via Agent(...) (or
+                      the legacy Task(...)) must list `Agent` or `Task` in
+                      allowed-tools
+  3. static-include — @${CLAUDE_PLUGIN_ROOT}/... @-includes must resolve on
+                      disk, relative to the repo root (the plugin root)
+  4. agent-path     — agents/<x>.md paths referenced in a command body must
+                      exist
+  5. tool-names     — every declared tool is a known Claude Code tool (warn,
+                      so a tool rename upstream does not fail CI)
   6. state-include  — @.research/... @-includes name a known state file (warn)
   7. help-sync      — help.md lists exactly the set of commands (warn)
+
+Tools are declared under `allowed-tools` in commands and under `tools` in
+agents (Claude Code's subagent key); both accept a YAML list or a
+comma-separated string and are checked by the same tool-name rule.
 
 Errors fail CI (exit 1). Warnings are printed but do not fail.
 
@@ -28,17 +35,26 @@ import argparse
 
 # ---- configuration --------------------------------------------------------
 
-COMMANDS_DIR = ".claude/commands/wtfMS"
-AGENTS_DIR = ".claude/agents/wtfMS"
-HELP_FILE = ".claude/commands/wtfMS/help.md"
+# The repo root is the plugin root: Claude Code loads commands/ and agents/
+# by convention, and ${CLAUDE_PLUGIN_ROOT} resolves to it at runtime.
+COMMANDS_DIR = "commands"
+AGENTS_DIR = "agents"
+HELP_FILE = "commands/help.md"
 
-# Known Claude Code tool names an allowed-tools list may reference.
+# Runtime-expanded prefix for resources shipped inside the plugin.
+PLUGIN_ROOT_VAR = "${CLAUDE_PLUGIN_ROOT}/"
+
+# The subagent spawn tool: `Agent` in current Claude Code, `Task` before the
+# rename. Either spelling satisfies the task-tool rule.
+SPAWN_TOOLS = {"Agent", "Task"}
+
+# Known Claude Code tool names a tools declaration may reference.
 KNOWN_TOOLS = {
     "Read", "Write", "Edit", "MultiEdit", "NotebookEdit",
-    "Bash", "Glob", "Grep", "Task",
+    "Bash", "Glob", "Grep",
     "WebSearch", "WebFetch", "AskUserQuestion",
     "TodoWrite", "Skill",
-}
+} | SPAWN_TOOLS
 
 # Top-level runtime state files the workflow generates under .research/.
 # @.research/<x> includes are not existence-checked (they're created at
@@ -119,6 +135,34 @@ def parse_frontmatter(fm):
     return data
 
 
+# ---- tool declarations ----------------------------------------------------
+
+def tool_list(value):
+    """
+    Normalize a tools declaration to a list of entries. Claude Code accepts
+    both a YAML list and a comma-separated string ("Read, Write, Glob");
+    commas inside a permission pattern like Bash(git commit -m "a, b") are
+    not separators. None stays None (key absent).
+    """
+    if value is None or isinstance(value, list):
+        return value
+    return [t.strip() for t in re.split(r",(?![^(]*\))", value) if t.strip()]
+
+
+def tool_name(entry):
+    """'Bash(git add:*)' -> 'Bash'."""
+    return re.split(r"[(\s]", entry.strip(), 1)[0]
+
+
+def check_tool_names(rel, tools, fnd):
+    # 5. tool names (warn: an upstream rename must not fail CI)
+    for t in tools:
+        if tool_name(t) not in KNOWN_TOOLS:
+            fnd.warn(rel, "tool-names",
+                     f"unknown tool '{t}' "
+                     f"(known: {', '.join(sorted(KNOWN_TOOLS))})")
+
+
 # ---- checks ---------------------------------------------------------------
 
 def check_command(path, text, fnd, command_basenames):
@@ -142,27 +186,20 @@ def check_command(path, text, fnd, command_basenames):
     if not fm.get("description"):
         fnd.error(rel, "frontmatter", "missing required key: description")
 
-    tools = fm.get("allowed-tools", None)
+    tools = tool_list(fm.get("allowed-tools", None))
     if tools is None:
         fnd.error(rel, "frontmatter", "missing required key: allowed-tools")
         tools = []
-    if not isinstance(tools, list):
-        fnd.error(rel, "frontmatter", "allowed-tools must be a list (or [])")
-        tools = []
 
-    # 5. tool names
-    for t in tools:
-        if t not in KNOWN_TOOLS:
-            fnd.error(rel, "tool-names",
-                      f"unknown tool '{t}' in allowed-tools "
-                      f"(known: {', '.join(sorted(KNOWN_TOOLS))})")
+    check_tool_names(rel, tools, fnd)
 
-    # 2. task-tool: spawns subagent -> must allow Task
-    spawns = bool(re.search(r"\bTask\s*\(", body)) or "subagent_type" in body
-    if spawns and "Task" not in tools:
+    # 2. task-tool: spawns a subagent -> must allow Agent (or legacy Task)
+    spawns = bool(re.search(r"\b(?:Agent|Task)\(", body)) \
+        or "subagent_type" in body
+    if spawns and not ({tool_name(t) for t in tools} & SPAWN_TOOLS):
         fnd.error(rel, "task-tool",
-                  "command invokes Task(...) to spawn a subagent but "
-                  "'Task' is not in allowed-tools")
+                  "command spawns a subagent (Agent(...)/Task(...)) but "
+                  "neither 'Agent' nor 'Task' is in allowed-tools")
 
     # 4. agent-path references resolve
     _check_agent_paths(path, body, fnd, rel)
@@ -173,7 +210,7 @@ def check_command(path, text, fnd, command_basenames):
 
 def _check_agent_paths(path, body, fnd, rel):
     repo_root = _REPO_ROOT
-    for m in re.finditer(r"\.claude/agents/wtfMS/[\w-]+\.md", body):
+    for m in re.finditer(r"(?<![\w/])agents/[\w-]+\.md", body):
         ref = m.group(0)
         if not os.path.isfile(os.path.join(repo_root, ref)):
             fnd.error(rel, "agent-path",
@@ -182,11 +219,14 @@ def _check_agent_paths(path, body, fnd, rel):
 
 def _check_includes(path, body, fnd, rel):
     repo_root = _REPO_ROOT
-    for m in re.finditer(r"@(\.[\w./-]+\.(?:md|json))", body):
-        inc = m.group(1)  # e.g. .research/WORKFLOW.md or .claude/wtf-ms/...
-        if inc.startswith(".claude/"):
-            # 3. static include must resolve
-            if not os.path.isfile(os.path.join(repo_root, inc)):
+    pattern = r"@(\$\{CLAUDE_PLUGIN_ROOT\}/[\w./-]+\.(?:md|json)" \
+              r"|\.[\w./-]+\.(?:md|json))"
+    for m in re.finditer(pattern, body):
+        inc = m.group(1)  # e.g. .research/WORKFLOW.md or ${CLAUDE_PLUGIN_ROOT}/...
+        if inc.startswith(PLUGIN_ROOT_VAR):
+            # 3. static include must resolve under the plugin root
+            if not os.path.isfile(
+                    os.path.join(repo_root, inc[len(PLUGIN_ROOT_VAR):])):
                 fnd.error(rel, "static-include",
                           f"@-include '{inc}' does not exist on disk")
         elif inc.startswith(".research/"):
@@ -214,8 +254,21 @@ def check_agent(path, text, fnd):
     elif not re.match(r"^wtfms-[\w-]+$", name):
         fnd.error(rel, "frontmatter",
                   f"agent name '{name}' should match 'wtfms-<slug>'")
+    elif name != os.path.basename(path)[:-3]:
+        # Claude Code derives a plugin agent's identity from its filename, so a
+        # file whose name disagrees with its frontmatter is unspawnable by the
+        # subagent_type the commands use.
+        fnd.error(rel, "frontmatter",
+                  f"agent name '{name}' must match the filename "
+                  f"'{os.path.basename(path)}'")
     if not fm.get("description"):
         fnd.error(rel, "frontmatter", "missing required key: description")
+    # Agents declare tools under `tools` (Claude Code's subagent key);
+    # `allowed-tools` is accepted as the legacy spelling. Absent = inherits
+    # every tool, which is valid, so the key is optional here.
+    tools = tool_list(fm.get("tools", fm.get("allowed-tools", None)))
+    if tools:
+        check_tool_names(rel, tools, fnd)
 
 
 def check_help_sync(repo_root, command_basenames, fnd):

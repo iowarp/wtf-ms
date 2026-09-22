@@ -1,0 +1,19 @@
+{
+  "name": "wtfMS",
+  "version": "0.1.0",
+  "description": "Material science research planning and automation: research framing, literature review, virtual lab mapping, workflow planning, and task execution.",
+  "author": {
+    "name": "akougkas",
+    "url": "https://github.com/akougkas"
+  },
+  "homepage": "https://github.com/akougkas/wtf-ms",
+  "repository": "https://github.com/akougkas/wtf-ms",
+  "license": "MIT",
+  "keywords": [
+    "research",
+    "material-science",
+    "literature-review",
+    "workflow",
+    "academic"
+  ]
+}

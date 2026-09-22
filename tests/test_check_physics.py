@@ -13,7 +13,7 @@ import os
 import unittest
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_MOD = os.path.join(_HERE, "..", ".claude", "wtf-ms", "scripts",
+_MOD = os.path.join(_HERE, "..", "wtf-ms", "scripts",
                     "check_physics.py")
 _spec = importlib.util.spec_from_file_location("check_physics", _MOD)
 cp = importlib.util.module_from_spec(_spec)

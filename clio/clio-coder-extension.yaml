@@ -1,0 +1,12 @@
+manifestVersion: 1
+id: wtfms
+name: WTF-MS
+version: 0.2.0
+description: Materials-science research interviews, literature synthesis, resource-aware planning, task execution, and paper handoff.
+resources:
+  skills: skills
+  prompts: prompts
+  agents: agents
+  fleets: fleets
+compatibility:
+  clio: ">=0.4.6"
