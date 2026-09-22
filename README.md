@@ -237,4 +237,4 @@ Created by Daisy Quach. Guardrail scripts and linter by Matthew Larson. Develope
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
